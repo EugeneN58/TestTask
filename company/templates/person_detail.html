@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div style ="text-align: left; margin: 10px;">
+        Сотрудник № {{person.pk}} </div>
+
+
+<table class="table table-bordered" style="width: 60%">
+    <tr>
+        <th>Имя</th>
+        <td>{{ person.name }}</td>
+    </tr>
+    <tr>
+        <th>Фамилия</th>
+        <td>{{ person.last_name }}</td>
+    </tr>
+    <tr>
+        <th>Отчество</th>
+        <td>{{ person.patronymic }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ person.email }}</td>
+    </tr>
+    <tr>
+        <th>Телефон</th>
+        <td>{{ person.phone }}</td>
+    </tr>
+    <tr>
+        <th>Дата начала работы</th>
+        <td>{{ person.start_work_date|date:"d/m/Y" }}</td>
+    </tr>
+    <tr>
+        <th>Дата окончания работы</th>
+        <td>{{ person.end_work_date|date:"d/m/Y" }}</td>
+    </tr>
+    <tr>
+        <th>Должность</th>
+        <td>{{ person.post }}</td>
+    </tr>
+    <tr>
+        <th>Отдел</th>
+        <td>{{ person.department }}</td>
+    </tr>
+
+</table>
+
+{% endblock %}

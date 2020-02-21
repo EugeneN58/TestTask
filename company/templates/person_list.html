@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div style ="text-align: left; margin: 10px;">
+        Список сотрудников
+    </div>
+
+    <div name="filter">
+        <form action={% url "employees" %}>
+            <label for="department">Отдел: </label>
+            <select id="department" name="department">
+                <option value = "None">Все</option>
+                {% for department in department_list%}
+                    <option value = "{{ department }}">{{department}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="is_working">Работает в компании: </label>
+            <select id = "is_working" name="is_working">
+                <option value="None">Не важно</option>
+                <option value="True">Да</option>
+                <option value="False">Нет</option>
+            </select>
+
+            <button type="submit">Отфильтровать</button>
+        </form>
+    </div>
+
+    <table class="table table-bordered" style = 'width: 50%;'>
+      <tbody>
+        <tr>
+            <td style="width:50%;">ФИО</td>
+            <td style="width:25%;">Отдел</td>
+            <td style="width:25%;">Должность</td>
+        </tr>
+
+        {% for person in person_list %}
+          <tr>
+              <td><a href = "{% url 'person_detail' person.pk %}"> {{ person}} </a></td>
+              <td>{{person.department}}</td>
+              <td>{{person.post}}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+
+{% if person_list.has_other_pages %}
+  <ul class="pagination">
+    {% if person_list.has_previous %}
+      <li><a href="?{{get_params}}page={{ person_list.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in person_list.paginator.page_range %}
+      {% if person_list.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?{{get_params}}page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if person_list.has_next %}
+      <li><a href="?{{get_params}}page={{ person_list.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+    {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li><a href="?{{get_params}}page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?{{get_params}}page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li><a href="?{{get_params}}page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+
+{% endblock %}
